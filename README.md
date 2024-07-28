@@ -83,7 +83,19 @@ colmap exhaustive_matcher \
 
 <br />
 
-4. **Undistort images**
+4. **Create a sparse 3D reconstruction**
+```
+mkdir $DATASET_PATH/sparse
+
+colmap mapper \
+    --database_path $DATASET_PATH/database.db \
+    --image_path $DATASET_PATH/images \
+    --output_path $DATASET_PATH/sparse
+```
+
+<br />
+
+5. **Undistort images**
 ```
 mkdir $DATASET_PATH/dense
 
@@ -100,14 +112,14 @@ I keep it the same as `image_size` from step 1.
 
 <br />
 
-5. **Create a `scene.mvs` file using the undistorted camera poses and images, and the sparse point-cloud from the previous step:**
+6. **Create a `scene.mvs` file using the undistorted camera poses and images, and the sparse point-cloud from the previous step:**
 ```
 bin/InterfaceCOLMAP -i dense -o scene.mvs --image-folder dense/images
 ```
 
 <br />
 
-6. **(Optional) Densify the point cloud**
+7. **(Optional) Densify the point cloud**
 ```
 bin/DensifyPointCloud scene.mvs
 ```
@@ -116,7 +128,7 @@ bin/DensifyPointCloud scene.mvs
 
 <br />
 
-7. **Reconstruct a rough mesh**
+8. **Reconstruct a rough mesh**
 ```
 bin/ReconstructMesh scene_dense.mvs -p scene_dense.ply
 ```
@@ -125,7 +137,7 @@ bin/ReconstructMesh scene_dense.mvs -p scene_dense.ply
 
 <br />
 
-8. **(Optional) Refine the obtained mesh**
+9. **(Optional) Refine the obtained mesh**
 ```
 bin/RefineMesh scene_dense.mvs -m scene_dense_mesh.ply -o scene_dense_mesh_refine.mvs --max-face-area 16
 ```
@@ -134,7 +146,7 @@ bin/RefineMesh scene_dense.mvs -m scene_dense_mesh.ply -o scene_dense_mesh_refin
 
 <br />
 
-9. **Texture the mesh**
+10. **Texture the mesh**
 ```
 bin/TextureMesh scene_dense.mvs -m scene_dense_mesh_refine.ply -o scene_dense_mesh_refine_texture.mvs
 ```
